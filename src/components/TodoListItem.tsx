@@ -17,6 +17,15 @@ type TodoListItemProps = {
     moveTaskDown: (index: number) => void;
 };
 
+
+const trimTaskText = (str : String) => {
+    if(str.length > 30){
+        return str.substring(0,30) + "..."
+    }
+    return str;
+}
+
+
 export default function TodoListItem({
     task,
     index,
@@ -44,7 +53,7 @@ export default function TodoListItem({
                     className={`flex-1 cursor-pointer ${task.completed ? "line-through text-black" : "text-black"}`}
                     onClick={() => toggleComplete(index)}
                 >
-                    {task.text}
+                    {trimTaskText(task.text)}
                 </span>
             )}
 
