@@ -1,4 +1,4 @@
-# Todo List Application - React (TypeScript)
+# Todo Application - React (TypeScript)
 
 A simple and intuitive Todo List application built with React and TypeScript. This application allows users to manage their tasks efficiently with features like adding, editing, marking as complete, and reordering tasks.
 
