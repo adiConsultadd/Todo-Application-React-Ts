@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import TodoListItem from "./TodoListItem";
 
 interface Task {
   text: string;
@@ -8,7 +9,6 @@ interface Task {
 type FilterType = "all" | "active" | "completed";
 
 export default function TodoList() {
-  // Stores All The Tasks  
   const [tasks, setTasks] = useState<Task[]>(() => {
     const savedTasks = localStorage.getItem("tasks");
     return savedTasks ? JSON.parse(savedTasks) : [];
@@ -32,7 +32,7 @@ export default function TodoList() {
 
   function addTask() {
     if (newTask.trim() !== "") {
-      setTasks((oldTasks) => [...oldTasks, { text: newTask, completed: false }]);
+      setTasks([...tasks, { text: newTask, completed: false }]);
       setNewTask("");
     }
   }
@@ -70,7 +70,10 @@ export default function TodoList() {
     if (index > 0) {
       setTasks((prevTasks) => {
         const updatedTasks = [...prevTasks];
-        [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
+        [updatedTasks[index], updatedTasks[index - 1]] = [
+          updatedTasks[index - 1],
+          updatedTasks[index],
+        ];
         return updatedTasks;
       });
     }
@@ -80,87 +83,59 @@ export default function TodoList() {
     if (index < tasks.length - 1) {
       setTasks((prevTasks) => {
         const updatedTasks = [...prevTasks];
-        [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]];
+        [updatedTasks[index], updatedTasks[index + 1]] = [
+          updatedTasks[index + 1],
+          updatedTasks[index],
+        ];
         return updatedTasks;
       });
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-black text-white rounded-lg shadow-lg border border-gray-600">
-      <h1 className="text-3xl font-bold text-center text-gray-300 mb-6">To-Do Application</h1>
-
-      <div className="mb-6">
-        <div className="flex flex-col sm:flex-row items-center gap-3 mb-4 w-full">
-          <input
-            type="text"
-            placeholder="Enter a Task"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            className="flex-1 px-4 py-2 bg-gray-100 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500"
-            onKeyPress={(e) => e.key === "Enter" && addTask()}
-          />
-          <button
-            className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400 transition"
-            onClick={addTask}
-          >
-            Add Task
-          </button>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as FilterType)}
-            className="px-4 py-2 bg-gray-100 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-          >
-            <option value="all">All Tasks</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
+    <div className="max-w-2xl mx-auto p-6 bg-gray-950 text-white rounded-lg shadow-lg border border-gray-600">
+      <h1 className="text-3xl font-bold text-center text-gray-300 mb-6">To-Do</h1>
+      <div className="mb-6 flex flex-col sm:flex-row items-center gap-3">
+        <input
+          type="text"
+          placeholder="Enter a Task"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          className="flex-1 px-4 py-2 bg-gray-100 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500"
+          onKeyPress={(e) => e.key === "Enter" && addTask()}
+        />
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={addTask}>
+          Add Task
+        </button>
+        <select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as FilterType)}
+          className="px-4 py-2 bg-gray-100 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+        >
+          <option value="all">All Tasks</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+        </select>
       </div>
-
       {filteredTasks.length === 0 ? (
         <p className="text-center text-gray-500">No tasks to display</p>
       ) : (
         <ul className="space-y-3">
           {filteredTasks.map((task, index) => (
-            <li key={index} className="bg-gray-100 rounded-lg border border-gray-300 shadow-md p-4 flex items-center justify-between">
-              {editIndex === index ? (
-                <input
-                  type="text"
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                  className="flex-1 px-2 py-1 bg-white border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-                />
-              ) : (
-                <span
-                  className={`flex-1 cursor-pointer ${task.completed ? "line-through text-black" : "text-black"}`}
-                  onClick={() => toggleComplete(index)}
-                >
-                  {task.text}
-                </span>
-              )}
-
-              <div className="flex gap-2 ml-4">
-                {editIndex === index ? (
-                  <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition" onClick={saveEdit}>
-                    Save
-                  </button>
-                ) : (
-                  <button className="bg-gray-300 text-black px-3 py-1 rounded hover:bg-gray-400 transition" onClick={() => startEditing(index)}>
-                    Edit
-                  </button>
-                )}
-                <button className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500 transition" onClick={() => deleteTask(index)}>
-                  Delete
-                </button>
-                <button className="bg-gray-300 text-black px-3 py-1 rounded hover:bg-gray-400 transition" onClick={() => moveTaskUp(index)}>
-                  ⬆️
-                </button>
-                <button className="bg-gray-300 text-black px-3 py-1 rounded hover:bg-gray-400 transition" onClick={() => moveTaskDown(index)}>
-                  ⬇️
-                </button>
-              </div>
-            </li>
+            <TodoListItem
+              key={index}
+              task={task}
+              index={index}
+              editIndex={editIndex}
+              editText={editText}
+              setEditText={setEditText}
+              startEditing={startEditing}
+              saveEdit={saveEdit}
+              deleteTask={deleteTask}
+              toggleComplete={toggleComplete}
+              moveTaskUp={moveTaskUp}
+              moveTaskDown={moveTaskDown}
+            />
           ))}
         </ul>
       )}
