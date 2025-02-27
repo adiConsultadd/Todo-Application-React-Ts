@@ -1,50 +1,51 @@
-# React + TypeScript + Vite
+# Todo List Application - React (TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and intuitive Todo List application built with React and TypeScript. This application allows users to manage their tasks efficiently with features like adding, editing, marking as complete, and reordering tasks.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Add Tasks**: Create new tasks with a simple input field
+- **Edit Tasks**: Modify existing task content
+- **Delete Tasks**: Remove unwanted tasks from the list
+- **Mark as Complete**: Toggle tasks between complete and incomplete states
+- **Reorder Tasks**: Move tasks up or down in the list to prioritize them
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Clone the repository to your local machine:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+git clone https://github.com/adiConsultadd/Todo-Application-React-Ts.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Install dependencies:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+npm install
 ```
+
+Start the development server:
+
+```sh
+npm run dev
+```
+
+## Managing Tasks
+
+- **Complete/Uncomplete a Task**: Click the "✓" button to mark a task as complete. Click the "↩️" button to mark it as incomplete again.
+- **Edit a Task**: Click the "Edit" button, modify the text, and click "Save" to confirm or "Cancel" to discard changes.
+- **Delete a Task**: Click the "Delete" button to remove a task from the list.
+- **Reorder Tasks**: Use the "⬆️" and "⬇️" buttons to move tasks up or down in the list.
+
+## Component Functions
+
+- `handleInputChange` - Updates the `newTask` state as the user types
+- `handleEditChange` - Updates the `editText` state during task editing
+- `addTask` - Adds a new task to the list
+- `deleteTask` - Removes a task from the list
+- `startEditing` - Initiates the editing mode for a task
+- `saveEdit` - Saves the edited task content
+- `cancelEdit` - Exits the editing mode without saving changes
+- `toggleComplete` - Marks a task as complete or incomplete
+- `moveTaskUp` - Moves a task one position up in the list
+- `moveTaskDown` - Moves a task one position down in the list
